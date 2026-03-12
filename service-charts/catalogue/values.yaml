@@ -1,0 +1,17 @@
+replicaCount: 1
+
+image:
+  repository: my/craftista-catalogue
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 5000
+
+resources:
+  limits:
+    memory: "512Mi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"

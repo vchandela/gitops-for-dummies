@@ -1,0 +1,17 @@
+replicaCount: 1
+
+image:
+  repository: nitheesh86/microservice-frontend
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 30080
+
+resources:
+  limits:
+    memory: "512Mi"
+  requests:
+    cpu: "200m"
+    memory: "256Mi"

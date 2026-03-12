@@ -1,0 +1,82 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: catalogue-dev-stage
+  labels:
+    autopromote: "true"
+  namespace: craftista
+  annotations:
+    kargo.akuity.io/color: green
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: catalogue-warehouse
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-catalogue
+          vars:
+            - name: envPath
+              value: env/dev/catalogue
+            - name: argocdApp
+              value: catalogue-dev
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: catalogue-staging-stage
+  namespace: craftista
+  labels:
+    autopromote: "true"
+  annotations:
+    kargo.akuity.io/color: blue
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: catalogue-warehouse
+      sources:
+        stages:
+          - catalogue-dev-stage
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-catalogue
+          vars:
+            - name: envPath
+              value: env/staging/catalogue
+            - name: argocdApp
+              value: catalogue-staging
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: catalogue-prod-stage
+  namespace: craftista
+  labels:
+    autopromote: "true"
+  annotations:
+    kargo.akuity.io/color: orange
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: catalogue-warehouse
+      sources:
+        stages:
+          - catalogue-staging-stage
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-catalogue
+          vars:
+            - name: envPath
+              value: env/prod/catalogue
+            - name: argocdApp
+              value: catalogue-prod

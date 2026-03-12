@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: voting-dev
+  namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: craftista:voting-dev-stage
+spec:
+  project: craftista
+  source:
+    repoURL: https://github.com/vchandela/gitops-for-dummies
+    targetRevision: main
+    path: service-charts/voting
+    helm:
+      valueFiles:
+        - ../../env/dev/voting/voting-values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+

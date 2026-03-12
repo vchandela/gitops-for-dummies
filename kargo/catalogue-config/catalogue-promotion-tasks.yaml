@@ -1,0 +1,45 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: promotion-catalogue
+  namespace: craftista
+spec:
+  vars:
+    - name: image
+      value: docker.io/nitheesh86/microservice-catalogue
+    - name: repoURL
+      value: https://github.com/vchandela/gitops-for-dummies
+    - name: branch
+      value: main
+    - name: envPath
+    - name: argocdApp
+  steps:
+    - uses: git-clone
+      config:
+        repoURL: ${{ vars.repoURL }}
+        checkout:
+          - branch: ${{ vars.branch }}
+            path: ./out
+
+    - uses: yaml-update
+      as: update-image
+      config:
+        path: ./out/${{ vars.envPath }}/catalogue-values.yaml
+        updates:
+          - key: image.tag
+            value: ${{ imageFrom( vars.image ).Tag }}
+
+    - uses: git-commit
+      as: commit
+      config:
+        path: ./out
+        message: ${{ task.outputs['update-image'].commitMessage }}
+
+    - uses: git-push
+      config:
+        path: ./out
+
+    - uses: argocd-update
+      config:
+        apps:
+          - name: ${{ vars.argocdApp }}

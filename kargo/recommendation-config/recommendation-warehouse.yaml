@@ -1,0 +1,13 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: recommendation-warehouse
+  namespace: craftista
+spec:
+  freightCreationPolicy: Automatic
+  interval: 1440m
+  subscriptions:
+    - image:
+        repoURL: docker.io/nitheesh86/microservice-recommendation
+        imageSelectionStrategy: SemVer
+        discoveryLimit: 20

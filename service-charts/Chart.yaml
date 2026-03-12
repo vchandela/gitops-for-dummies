@@ -1,0 +1,19 @@
+apiVersion: v2
+name: umbrella-chart
+version: 0.1.1
+dependencies:
+  - name: catalogue
+    version: 0.1.1
+    repository: "file://service-charts/catalogue"
+  - name: catalogue-db
+    version: 0.1.1
+    repository: "file://service-charts/catalogue-db"
+  - name: frontend
+    version: 0.1.1
+    repository: "file://service-charts/frontend"
+  - name: recommendation
+    version: 0.1.1
+    repository: "file://service-charts/recommendation"
+  - name: voting
+    version: 0.1.1
+    repository: "file://service-charts/voting"

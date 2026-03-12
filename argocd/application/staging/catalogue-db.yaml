@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: catalogue-db-staging
+  namespace: argocd
+spec:
+  project: craftista
+  source:
+    repoURL: https://github.com/vchandela/gitops-for-dummies
+    targetRevision: main
+    path: service-charts/catalogue-db
+    helm:
+      valueFiles:
+        - /env/staging/catalogue-db/catalogue-db-values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: staging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

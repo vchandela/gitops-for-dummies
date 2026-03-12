@@ -1,0 +1,82 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: voting-dev-stage
+  labels:
+    autopromote: "true"
+  namespace: craftista
+  annotations:
+    kargo.akuity.io/color: green
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: voting-warehouse
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-voting
+          vars:
+            - name: envPath
+              value: env/dev/voting
+            - name: argocdApp
+              value: voting-dev
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: voting-staging-stage
+  namespace: craftista
+  labels:
+    autopromote: "true"
+  annotations:
+    kargo.akuity.io/color: blue
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: voting-warehouse
+      sources:
+        stages:
+          - voting-dev-stage
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-voting
+          vars:
+            - name: envPath
+              value: env/staging/voting
+            - name: argocdApp
+              value: voting-staging
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: voting-prod-stage
+  namespace: craftista
+  labels:
+    autopromote: "true"
+  annotations:
+    kargo.akuity.io/color: orange
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: voting-warehouse
+      sources:
+        stages:
+          - voting-staging-stage
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-voting
+          vars:
+            - name: envPath
+              value: env/prod/voting
+            - name: argocdApp
+              value: voting-prod

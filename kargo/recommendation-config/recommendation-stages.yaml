@@ -1,0 +1,82 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: recommendation-dev-stage
+  labels:
+    autopromote: "true"
+  namespace: craftista
+  annotations:
+    kargo.akuity.io/color: green
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: recommendation-warehouse
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-recommendation
+          vars:
+            - name: envPath
+              value: env/dev/recommendation
+            - name: argocdApp
+              value: recommendation-dev
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: recommendation-staging-stage
+  namespace: craftista
+  labels:
+    autopromote: "true"
+  annotations:
+    kargo.akuity.io/color: blue
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: recommendation-warehouse
+      sources:
+        stages:
+          - recommendation-dev-stage
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-recommendation
+          vars:
+            - name: envPath
+              value: env/staging/recommendation
+            - name: argocdApp
+              value: recommendation-staging
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: recommendation-prod-stage
+  namespace: craftista
+  labels:
+    autopromote: "true"
+  annotations:
+    kargo.akuity.io/color: orange
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: recommendation-warehouse
+      sources:
+        stages:
+          - recommendation-staging-stage
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-recommendation
+          vars:
+            - name: envPath
+              value: env/prod/recommendation
+            - name: argocdApp
+              value: recommendation-prod

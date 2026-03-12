@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: postgres
+  tag: 16.2-alpine3.19
+  pullPolicy: IfNotPresent
+
+service:
+  port: 5432
+
+env:
+  POSTGRES_USER: devops
+  POSTGRES_PASSWORD: devops
+  POSTGRES_DB: catalogue

@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: recommendation-dev
+  namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: craftista:recommendation-dev-stage
+spec:
+  project: craftista
+  source:
+    repoURL: https://github.com/vchandela/gitops-for-dummies
+    targetRevision: main
+    path: service-charts/recommendation
+    helm:
+      valueFiles:
+        - ../../env/dev/recommendation/recommendation-values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

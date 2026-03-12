@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frontend-prod
+  namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: craftista:frontend-prod-stage
+spec:
+  project: craftista
+  source:
+    repoURL: https://github.com/vchandela/gitops-for-dummies
+    targetRevision: main
+    path: service-charts/frontend
+    helm:
+      valueFiles:
+        - "/env/prod/frontend/frontend-values.yaml"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

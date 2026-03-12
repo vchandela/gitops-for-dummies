@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - project.yaml
+  - projectconfig.yaml
+  - catalogue-config/catalogue-warehouse.yaml
+  - catalogue-config/catalogue-stages.yaml
+  - catalogue-config/catalogue-promotion-tasks.yaml
+  - frontend-config/frontend-warehouse.yaml
+  - frontend-config/frontend-stages.yaml
+  - frontend-config/frontend-promotion-tasks.yaml
+  - recommendation-config/recommendation-warehouse.yaml
+  - recommendation-config/recommendation-stages.yaml
+  - recommendation-config/recommendation-promotion-tasks.yaml
+  - voting-config/voting-warehouse.yaml
+  - voting-config/voting-stages.yaml
+  - voting-config/voting-promotion-tasks.yaml

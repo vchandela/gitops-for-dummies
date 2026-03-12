@@ -1,0 +1,82 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: frontend-dev-stage
+  labels:
+    autopromote: "true"
+  namespace: craftista
+  annotations:
+    kargo.akuity.io/color: green
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: frontend-warehouse
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-frontend
+          vars:
+            - name: envPath
+              value: env/dev/frontend
+            - name: argocdApp
+              value: frontend-dev
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: frontend-staging-stage
+  namespace: craftista
+  labels:
+    autopromote: "true"
+  annotations:
+    kargo.akuity.io/color: blue
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: frontend-warehouse
+      sources:
+        stages:
+          - frontend-dev-stage
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-frontend
+          vars:
+            - name: envPath
+              value: env/staging/frontend
+            - name: argocdApp
+              value: frontend-staging
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: frontend-prod-stage
+  namespace: craftista
+  labels:
+    autopromote: "true"
+  annotations:
+    kargo.akuity.io/color: orange
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: frontend-warehouse
+      sources:
+        stages:
+          - frontend-staging-stage
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promotion-frontend
+          vars:
+            - name: envPath
+              value: env/prod/frontend
+            - name: argocdApp
+              value: frontend-prod

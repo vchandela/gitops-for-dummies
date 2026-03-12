@@ -1,0 +1,11 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: craftista
+  namespace: craftista
+spec:
+  promotionPolicies:
+    - stageSelector:
+        matchLabels:
+          autopromote: "true"
+      autoPromotionEnabled: true

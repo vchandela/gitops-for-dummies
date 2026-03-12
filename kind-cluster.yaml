@@ -1,0 +1,13 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: gitops-for-dummies
+nodes:
+  - role: control-plane
+    # Port mappings so we can access ArgoCD and app UIs from the browser
+    extraPortMappings:
+      - containerPort: 30080  # frontend NodePort
+        hostPort: 30080
+        protocol: TCP
+      - containerPort: 30443  # ArgoCD HTTPS (we'll port-forward instead, but good to have)
+        hostPort: 30443
+        protocol: TCP
