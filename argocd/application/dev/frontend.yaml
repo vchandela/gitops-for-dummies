@@ -7,13 +7,16 @@ metadata:
     kargo.akuity.io/authorized-stage: craftista:frontend-dev-stage
 spec:
   project: craftista
-  source:
-    repoURL: https://github.com/vchandela/gitops-for-dummies
-    targetRevision: main
-    path: service-charts/frontend
-    helm:
-      valueFiles:
-        - /env/dev/frontend/frontend-values.yaml
+  sources:
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      path: service-charts/frontend
+      helm:
+        valueFiles:
+          - $values/env/dev/frontend/frontend-values.yaml
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: dev

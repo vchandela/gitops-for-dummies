@@ -7,13 +7,16 @@ metadata:
     kargo.akuity.io/authorized-stage: craftista:catalogue-dev-stage
 spec:
   project: craftista
-  source:
-    repoURL: https://github.com/vchandela/gitops-for-dummies
-    targetRevision: main
-    path: service-charts/catalogue
-    helm:
-      valueFiles:
-        - /env/dev/catalogue/catalogue-values.yaml
+  sources:
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      path: service-charts/catalogue
+      helm:
+        valueFiles:
+          - $values/env/dev/catalogue/catalogue-values.yaml
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: dev

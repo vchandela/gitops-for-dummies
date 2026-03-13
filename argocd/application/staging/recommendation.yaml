@@ -7,13 +7,16 @@ metadata:
     kargo.akuity.io/authorized-stage: craftista:recommendation-staging-stage
 spec:
   project: craftista
-  source:
-    repoURL: https://github.com/vchandela/gitops-for-dummies
-    targetRevision: main
-    path: service-charts/recommendation
-    helm:
-      valueFiles:
-        - /env/staging/recommendation/recommendation-values.yaml
+  sources:
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      path: service-charts/recommendation
+      helm:
+        valueFiles:
+          - $values/env/staging/recommendation/recommendation-values.yaml
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: staging

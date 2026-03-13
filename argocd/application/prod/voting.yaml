@@ -7,13 +7,16 @@ metadata:
     kargo.akuity.io/authorized-stage: craftista:voting-prod-stage
 spec:
   project: craftista
-  source:
-    repoURL: https://github.com/vchandela/gitops-for-dummies
-    targetRevision: main
-    path: service-charts/voting
-    helm:
-      valueFiles:
-        - /env/prod/voting/voting-values.yaml
+  sources:
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      path: service-charts/voting
+      helm:
+        valueFiles:
+          - $values/env/prod/voting/voting-values.yaml
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: prod

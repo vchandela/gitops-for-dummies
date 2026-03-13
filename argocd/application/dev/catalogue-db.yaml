@@ -3,17 +3,18 @@ kind: Application
 metadata:
   name: catalogue-db-dev
   namespace: argocd
-  annotations:
-    kargo.akuity.io/authorized-stage: craftista:catalogue-db-dev-stage
 spec:
   project: craftista
-  source:
-    repoURL: https://github.com/vchandela/gitops-for-dummies
-    targetRevision: main
-    path: service-charts/catalogue-db
-    helm:
-      valueFiles:
-        - /env/dev/catalogue-db/catalogue-db-values.yaml
+  sources:
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      path: service-charts/catalogue-db
+      helm:
+        valueFiles:
+          - $values/env/dev/catalogue-db/catalogue-db-values.yaml
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: dev

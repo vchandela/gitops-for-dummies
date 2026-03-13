@@ -7,13 +7,16 @@ metadata:
     kargo.akuity.io/authorized-stage: craftista:voting-dev-stage
 spec:
   project: craftista
-  source:
-    repoURL: https://github.com/vchandela/gitops-for-dummies
-    targetRevision: main
-    path: service-charts/voting
-    helm:
-      valueFiles:
-        - ../../env/dev/voting/voting-values.yaml
+  sources:
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      path: service-charts/voting
+      helm:
+        valueFiles:
+          - $values/env/dev/voting/voting-values.yaml
+    - repoURL: https://github.com/vchandela/gitops-for-dummies
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
@@ -23,4 +26,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
