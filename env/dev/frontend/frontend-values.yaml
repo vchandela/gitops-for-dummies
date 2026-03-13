@@ -4,6 +4,11 @@ image:
 
 replicaCount: 2
 
+service:
+  type: NodePort
+  port: 30080
+  nodePort: 30080
+
 resources:
   limits:
     memory: "512Mi"
