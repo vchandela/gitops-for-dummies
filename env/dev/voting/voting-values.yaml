@@ -1,0 +1,10 @@
+image:
+  repository: nitheesh86/microservice-voting
+  tag: 1.0.1
+replicaCount: 2
+resources:
+  limits:
+    memory: "512Mi"
+  requests:
+    cpu: "200m"
+    memory: "128Mi"

@@ -1,0 +1,12 @@
+image:
+  repository: nitheesh86/microservice-frontend
+  tag: 1.0.11
+
+replicaCount: 2
+
+resources:
+  limits:
+    memory: "512Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
